@@ -1,0 +1,184 @@
+
+library(lubridate)
+library(jsonlite)
+library(httr)
+library(readxl)
+library(tidyverse)
+library(RSQLite)
+options(scipen = 999)
+
+
+
+dates <- read_xlsx("Dates Jan1 2013 to Nov13 2017.xlsx")
+colnames(dates)[1] = "time"
+number_date <- as.numeric(dates$time)
+dates <- cbind(dates, number_date)
+
+
+
+for (i in number_date){
+  if(i == 1357084800){
+  url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=",
+               i, sep = ""))
+  urlBC <- url0
+  } else if(i > 1357084800){
+    urlBC <- rbind(urlBC, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=",
+                              i, sep = ""))
+  }}
+
+
+
+get_fun <- function(url){
+  a <- GET(url = url)
+  rawToChar(a$content) %>%
+    fromJSON() 
+}
+
+Finally, I pulled the data and put it in a datatable
+bc_lapply <- lapply(urlBC, get_fun)
+bc <- cbind(dates$time, as.data.frame(unlist(bc_lapply)))
+colnames(bc) = c("Date", "BTC_Price")
+
+
+
+for (i in number_date){
+  if(i < 1438387200){
+    url0 <- ""
+  }
+ else if(i == 1438387200){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlETH <- url0
+  } else if(i > 1357084800){
+    urlETH <- rbind(urlETH, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=USD&ts=",
+                               i, sep = ""))
+  }}
+
+
+eth_lapply <- lapply(urlETH, get_fun)
+eth_dates <- dates %>%
+  filter(time >= 1438387200)
+eth <- cbind(eth_dates$time, as.data.frame(unlist(eth_lapply)))
+colnames(eth) = c("Date", "ETH_Price")
+
+for (i in number_date){
+  if(i == 1357084800){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=LTC&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlLTC <- url0
+  } else if(i > 1357084800){
+    urlLTC <- rbind(urlLTC, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=LTC&tsyms=USD&ts=",
+                               i, sep = ""))
+  }}
+
+
+LTC_lapply <- lapply(urlLTC, get_fun)
+LTC <- cbind(dates$time, as.data.frame(unlist(LTC_lapply)))
+colnames(LTC) = c("Date", "ETH_Price")
+
+for (i in number_date){
+  if(i < 1398902400){
+    url0 = ""
+  }
+  else if(i == 1398902400){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=XMR&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlXMR <- url0
+  } else if(i > 1398902400){
+    urlXMR <- rbind(urlXMR, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=XMR&tsyms=USD&ts=",
+                                  i, sep = ""))
+  }}
+
+
+XMR_lapply <- lapply(urlXMR, get_fun)
+XMR_dates <- dates %>%
+  filter(time >= 1398902400)
+XMR <- cbind(XMR_dates, as.data.frame(unlist(XMR_lapply)))
+
+for (i in number_date){
+  if(i < 1504224000){
+    url0 = ""
+  }
+  else if(i == 1504224000){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=BCH&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlBCH <- url0
+  } else if(i > 1504224000){
+    urlBCH <- rbind(urlBCH, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=BCH&tsyms=USD&ts=",
+                                  i, sep = ""))
+  }}
+
+
+BCH_lapply <- lapply(urlBCH, get_fun)
+BCH_dates <- dates %>%
+  filter(time >= 1504224000)
+BCH <- cbind(BCH_dates, as.data.frame(unlist(BCH_lapply)))
+
+for (i in number_date){
+  if(i == 1357084800){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=XRP&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlXRP <- url0
+  } else if(i > 1357084800){
+    urlXRP <- rbind(urlXRP, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=XRP&tsyms=USD&ts=",
+                               i, sep = ""))
+  }}
+
+XRP_lapply <- lapply(urlXRP, get_fun)
+XRP <- cbind(dates$time, as.data.frame(unlist(XRP_lapply)))
+colnames(XRP) = c("Date", "XRP_Price")
+
+for (i in number_date){
+  if(i < 1391212800){
+    url0 = ""
+  }
+  else if(i == 1391212800){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=DASH&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlDASH <- url0
+  } else if(i > 1391212800){
+    urlDASH <- rbind(urlDASH, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=DASH&tsyms=USD&ts=",
+                                  i, sep = ""))
+  }}
+
+
+DASH_lapply <- lapply(urlDASH, get_fun)
+DASH_dates <- dates %>%
+  filter(time >= 1391212800)
+DASH <- cbind(DASH_dates, as.data.frame(unlist(DASH_lapply)))
+
+for (i in number_date){
+  if(i < 1391212800){
+    url0 = ""
+  }
+  else if(i == 1391212800){
+    url0 <- (paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=DASH&tsyms=USD&ts=",
+                   i, sep = ""))
+    urlDASH <- url0
+  } else if(i > 1391212800){
+    urlDASH <- rbind(urlDASH, paste("https://min-api.cryptocompare.com/data/pricehistorical?fsym=DASH&tsyms=USD&ts=",
+                                    i, sep = ""))
+  }}
+
+
+DASH_lapply <- lapply(urlDASH, get_fun)
+DASH_dates <- dates %>%
+  filter(time >= 1391212800)
+DASH <- cbind(DASH_dates, as.data.frame(unlist(DASH_lapply)))
+
+
+
+
+db<-dbConnect(SQLite(),dbname="historical.prices")
+
+dbWriteTable(conn=db, name = "Bitcoin", value = bc)
+
+dbWriteTable(conn=db, name = "Litecoin", value = LTC)
+
+dbWriteTable(conn=db, name = "Monero", value = XMR)
+
+dbWriteTable(conn=db, name = "Bitcion Cash", value = BCH)
+
+dbWriteTable(conn=db, name = "Ripple", value = XRP)
+
+dbWriteTable(conn=db, name = "Dash", value = DASH)
